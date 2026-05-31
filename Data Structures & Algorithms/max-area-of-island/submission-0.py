@@ -1,0 +1,23 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        def bfs(i, j):
+            q = collections.deque([[i, j]])
+            curr = 1
+            while q:
+                r, c = q.popleft()
+
+                for nr, nc in [[r - 1, c], [r + 1, c], [r, c + 1], [r, c - 1]]:
+                    if 0 <= nr < len(grid) and 0 <= nc < len(grid[0]) and grid[nr][nc] == 1 and (nr, nc) not in seen:
+                        curr += 1
+                        seen.add((nr, nc))
+                        q.append([nr, nc])
+            return curr
+        
+        seen = set()
+        res = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1 and (i, j) not in seen:
+                    seen.add((i, j))
+                    res = max(res, bfs(i, j))
+        return res
